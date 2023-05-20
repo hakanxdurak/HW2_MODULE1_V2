@@ -1,5 +1,5 @@
 #include <hls_stream.h>
-#include "ap_int.h"
+#include <ap_int.h>
 #include <cmath>
 #define GPR_SIZE 46848
 #define W_SIZE 256
@@ -11,7 +11,7 @@ struct axis_data{
 	ap_uint<1> last;
 };
 
-void hardware_two(stream<axis_data> &TARGET, stream<axis_data> &X, stream<axis_data> &W_IN, stream<axis_data> &H, stream<axis_data> &W_OUT){
+void module_1_hw(stream<axis_data> &TARGET, stream<axis_data> &X, stream<axis_data> &W_IN, stream<axis_data> &H, stream<axis_data> &W_OUT){
 #pragma HLS INTERFACE ap_ctrl_none port=return
 #pragma HLS INTERFACE axis register both port=W_OUT
 #pragma HLS INTERFACE axis register both port=H
