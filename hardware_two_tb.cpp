@@ -1,9 +1,7 @@
 #include <hls_stream.h>
-#include "ap_int.h"
+#include <ap_int.h>
 #include <stdio.h>
 #include <cmath>
-#include <stdlib.h>
-#include <time.h>
 #define GPR_SIZE 46848
 #define W_SIZE 256
 #define H_SIZE 183
@@ -14,7 +12,7 @@ struct axis_data{
 	ap_uint<1> last;
 };
 
-void hardware_two(stream<axis_data> &TARGET, stream<axis_data> &X, stream<axis_data> &W_IN, stream<axis_data> &H, stream<axis_data> &W_OUT);
+void module_1_hw(stream<axis_data> &TARGET, stream<axis_data> &X, stream<axis_data> &W_IN, stream<axis_data> &H, stream<axis_data> &W_OUT);
 void software(float TARGET[GPR_SIZE], float X[GPR_SIZE], float W_IN[W_SIZE], float H[H_SIZE], float W_OUT[GPR_SIZE]);
 
 int main(){
@@ -26,16 +24,15 @@ int main(){
 	float W_IN[W_SIZE];
 	float H[H_SIZE];
 
-	srand(time(NULL));
 	for(int i = 0 ; i < GPR_SIZE ; i++){
-		TARGET[i] = -1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1-(-1))));
-		X[i] = -1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1-(-1))));
+		TARGET[i] = i * 0.0001235;
+		X[i] = i * 0.02342335;
 	}
 	for(int i = 0 ; i < W_SIZE ; i++){
-		W_IN[i] = -1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1-(-1))));
+		W_IN[i] = i * 0.05637435;
 	}
 	for(int i = 0 ; i < H_SIZE ; i++){
-		H[i] = -1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(1-(-1))));
+		H[i] = i * 0.346521235;
 	}
 /*                  TARGET                  */
 	axis_data local_read_target;
@@ -123,7 +120,7 @@ int main(){
 /*                  end                  */
 
 	hls::stream<axis_data> w_out_hw;
-	hardware_two(target_hw, x_hw, w_in_hw, h_hw, w_out_hw);
+	module_1_hw(target_hw, x_hw, w_in_hw, h_hw, w_out_hw);
 	float W_OUT_sw[W_SIZE];
 	software(TARGET, X, W_IN, H, W_OUT_sw);
 
